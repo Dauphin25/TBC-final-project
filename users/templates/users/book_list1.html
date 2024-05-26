@@ -1,0 +1,115 @@
+<!-- templates/book_list.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Book List{% endblock %}
+
+{% block content %}
+    <!-- Main container for the book list -->
+
+    <!-- Filter Form -->
+    <form method="get" action="{% url 'book_list1' %}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by book title">
+        <button type="submit">Search</button>
+    </form>
+    <div class="book-list-container">
+        <h2>Book List</h2>
+        <!-- Link to add a new book -->
+        <a href="{% url 'add_book' %}" class="add-book-link">Add Book</a>
+        <!-- Table to display the list of books -->
+        <table class="book-table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Publisher</th>
+                <th>Published Date</th>
+                <th>Stock Quantity</th>
+                <th>Borrowed Quantity</th>
+                <th>Current Borrowed Quantity</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <!-- Book details -->
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author.name }}</td> <!-- Assuming Author model has 'name' field -->
+                    <td>{{ book.genre.all|join:", " }}</td>
+                    <td>{{ book.publisher.name }}</td> <!-- Assuming Publisher model has 'name' field -->
+                    <td>{{ book.published_date }}</td>
+                    <td>{{ book.stock_quantity }}</td>
+                    <td>{{ book.borrowed_quantity }}</td>
+                    <td>{{ book.current_borrowed_quantity }}</td>
+                    <!-- Actions for each book -->
+                    <td>
+                        <a href="{% url 'update_book' book.pk %}" class="edit-link">Edit</a>
+                        <a href="{% url 'delete_book' book.pk %}" class="delete-link">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Adding CSS for the book list page -->
+    <style>
+        /* Main Book List Container */
+        .book-list-container {
+            max-width: 800px; /* Limit the width of the container */
+            margin: 0 auto; /* Center the container */
+            padding: 20px; /* Add padding around the container */
+        }
+
+        /* Add Book Link Styling */
+        .add-book-link {
+            display: block; /* Convert to block element */
+            margin-bottom: 20px; /* Add margin below the link */
+            text-decoration: none; /* Remove default underline */
+            color: #3498db; /* Link color */
+            font-weight: bold; /* Make the link text bold */
+            transition: color 0.3s ease; /* Smooth transition for color change */
+        }
+
+        /* Add Book Link Hover Effect */
+        .add-book-link:hover {
+            color: #2980b9; /* Change link color on hover */
+        }
+
+        /* Book Table Styling */
+        .book-table {
+            width: 100%; /* Set table width to 100% */
+            border-collapse: collapse; /* Collapse table borders */
+        }
+
+        /* Table Header Styling */
+        .book-table th {
+            background-color: #f2f2f2; /* Header background color */
+            padding: 10px; /* Add padding to header cells */
+            text-align: left; /* Left-align header text */
+            border-bottom: 2px solid #ddd; /* Bottom border for header cells */
+        }
+
+        /* Table Data Styling */
+        .book-table td {
+            padding: 10px; /* Add padding to data cells */
+            border-bottom: 1px solid #ddd; /* Bottom border for data cells */
+        }
+
+        /* Actions Link Styling */
+        .edit-link,
+        .delete-link {
+            text-decoration: none; /* Remove default underline */
+            margin-right: 10px; /* Add margin to separate links */
+            color: #3498db; /* Link color */
+            transition: color 0.3s ease; /* Smooth transition for color change */
+        }
+
+        /* Actions Link Hover Effect */
+        .edit-link:hover,
+        .delete-link:hover {
+            color: #2980b9; /* Change link color on hover */
+        }
+    </style>
+{% endblock %}

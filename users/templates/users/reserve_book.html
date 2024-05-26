@@ -1,0 +1,59 @@
+<!-- templates/users/reserve_book.html -->
+<!-- templates/reserve_book.html -->
+{% extends 'library/base.html' %}
+
+{% block content %}
+<!-- Main container for the reserve book content -->
+<div class="reserve-book-container">
+    <h1>Reserve or Join Waitlist for {{ book.title }}</h1>
+    <!-- Form for reserving or joining waitlist -->
+    <form method="post" class="reserve-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- Submit button with conditional text based on waitlist option -->
+        <button type="submit" class="reserve-button">{% if form.waitlist.value %}Join Waitlist{% else %}Reserve{% endif %}</button>
+    </form>
+</div>
+
+<!-- Adding CSS for the reserve book page -->
+<style>
+    /* Main Reserve Book Container */
+    .reserve-book-container {
+        max-width: 600px; /* Limit the width of the reserve book container */
+        margin: 0 auto; /* Center the reserve book container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Page Title */
+    .reserve-book-container h1 {
+        color: #2c3e50; /* Darker color for the title */
+        font-family: 'Arial', sans-serif; /* Set font family for the title */
+        margin-bottom: 20px; /* Add space below the title */
+        text-align: center; /* Center align the title */
+    }
+
+    /* Reserve Form Styling */
+    .reserve-form {
+        text-align: center; /* Center align the form */
+    }
+
+    /* Reserve Button Styling */
+    .reserve-button {
+        background-color: #3498db; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove button border */
+        padding: 10px 20px; /* Add padding to the button */
+        border-radius: 5px; /* Round the corners of the button */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Reserve Button Hover Effect */
+    .reserve-button:hover {
+        background-color: #2980b9; /* Change button background color on hover */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,63 @@
+<!-- templates/library/book_detail.html -->
+{% extends 'library/base.html' %}
+
+{% block content %}
+<!-- Main container for the book detail content -->
+<div class="book-detail-container">
+    <h1>{{ book.title }}</h1>
+    <p class="book-author"><strong>Author:</strong> {{ book.author }}</p>
+    <p class="book-publisher"><strong>Publisher:</strong> {{ book.publisher }}</p>
+    <p class="book-tags"><strong>Tags:</strong> {% for tag in book.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    <p class="book-published-date"><strong>Published Date:</strong> {{ book.published_date }}</p>
+    <p class="book-stock-quantity"><strong>Stock Quantity:</strong> {{ book.stock_quantity }}</p>
+    <p class="book-current-borrowed"><strong>Currently Borrowed:</strong> {{ book.current_borrowed_quantity }}</p>
+    <p class="book-currently-available"><strong>Currently Available:</strong> {{ book.currently_available_quantity }}</p>
+</div>
+
+<!-- Adding CSS for the book detail page -->
+<style>
+    /* Main Book Detail Container */
+    .book-detail-container {
+        max-width: 800px; /* Limit the width of the book detail container */
+        margin: 0 auto; /* Center the book detail container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Page Title */
+    .book-detail-container h1 {
+        color: #2c3e50; /* Darker color for the title */
+        font-family: 'Arial', sans-serif; /* Set font family for the title */
+        margin-bottom: 20px; /* Add space below the title */
+        text-align: center; /* Center align the title */
+    }
+
+    /* Paragraph Styling */
+    .book-detail-container p {
+        color: #34495e; /* Darker text color for paragraphs */
+        font-family: 'Arial', sans-serif; /* Set font family for paragraphs */
+        margin-bottom: 10px; /* Add space below paragraphs */
+    }
+
+    /* Specific Paragraph Classes for Styling */
+    .book-detail-container .book-author,
+    .book-detail-container .book-publisher,
+    .book-detail-container .book-published-date,
+    .book-detail-container .book-stock-quantity,
+    .book-detail-container .book-current-borrowed,
+    .book-detail-container .book-currently-available {
+        background-color: #ecf0f1; /* Light background color for detail items */
+        padding: 10px; /* Add padding inside detail items */
+        border-radius: 5px; /* Round the corners of detail items */
+        margin-bottom: 10px; /* Add space below detail items */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Bold Text for Labels */
+    .book-detail-container strong {
+        color: #2c3e50; /* Darker color for labels */
+    }
+</style>
+{% endblock %}

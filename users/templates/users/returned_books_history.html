@@ -1,0 +1,78 @@
+<!-- templates/returned_books_history.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Returned Books History{% endblock %}
+
+{% block content %}
+<!-- Main container for the returned books history content -->
+<div class="returned-books-history-container">
+    <h2>Returned Books History</h2>
+    <!-- Table for displaying returned books history -->
+    <table class="returned-books-table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>User</th>
+                <th>Issued Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for returned_book in returned_books %}
+            <tr>
+                <!-- Book Title Column -->
+                <td>{{ returned_book.book.title }}</td>
+                <!-- User Column -->
+                <td>{{ returned_book.user.user.get_full_name }}</td>
+                <!-- Issued Date Column -->
+                <td>{{ returned_book.issued_date }}</td>
+                <!-- Due Date Column -->
+                <td>{{ returned_book.due_date }}</td>
+                <!-- Return Date Column -->
+                <td>{{ returned_book.return_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Adding CSS for the returned books history page -->
+<style>
+    /* Main Returned Books History Container */
+    .returned-books-history-container {
+        max-width: 800px; /* Limit the width of the returned books history container */
+        margin: 0 auto; /* Center the returned books history container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Table Styling */
+    .returned-books-table {
+        width: 100%; /* Set table width to 100% */
+        border-collapse: collapse; /* Collapse border spacing */
+        margin-top: 20px; /* Add space above the table */
+    }
+
+    /* Table Header Styling */
+    .returned-books-table th {
+        background-color: #3498db; /* Header background color */
+        color: #fff; /* Header text color */
+        padding: 10px; /* Padding for header cells */
+        text-align: left; /* Left align header text */
+    }
+
+    /* Table Body Styling */
+    .returned-books-table td {
+        padding: 10px; /* Padding for table cells */
+        border-bottom: 1px solid #ddd; /* Add bottom border for table rows */
+    }
+
+    /* Table Row Hover Effect */
+    .returned-books-table tbody tr:hover {
+        background-color: #f2f2f2; /* Change background color on hover */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,127 @@
+<!-- templates/library/author_list.html -->
+{% extends "library/base.html" %}
+
+{% block content %}
+
+
+        <!-- Filter Form -->
+    <form method="get" action="{% url 'author_list' %}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by author name">
+        <button type="submit">Search</button>
+    </form>
+<!-- Main container for the author list content -->
+<div class="author-list-container">
+    <h1>Authors</h1>
+    <ul class="author-list">
+        {% for author in authors %}
+            <li>
+                <a href="{% url 'author_detail' author.pk %}">{{ author.first_name }} {{ author.last_name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">previous</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="page-link">next</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Adding CSS for the author list page -->
+<style>
+    /* Main Author List Container */
+    .author-list-container {
+        max-width: 800px; /* Limit the width of the author list container */
+        margin: 0 auto; /* Center the author list container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Page Title */
+    .author-list-container h1 {
+        color: #2c3e50; /* Darker color for the title */
+        font-family: 'Arial', sans-serif; /* Set font family for the title */
+        margin-bottom: 20px; /* Add space below the title */
+        text-align: center; /* Center align the title */
+    }
+
+    /* Unordered List Styling */
+    .author-list {
+        list-style-type: none; /* Remove default list styling */
+        padding: 0; /* Remove default padding */
+        margin: 0; /* Remove default margin */
+    }
+
+    /* List Item Styling */
+    .author-list li {
+        background-color: #ecf0f1; /* Light background color for list items */
+        color: #2c3e50; /* Dark text color */
+        padding: 10px; /* Add padding inside list items */
+        margin-bottom: 10px; /* Add space between list items */
+        border-radius: 5px; /* Round the corners of list items */
+        font-family: 'Arial', sans-serif; /* Set font family for list items */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Link Styling */
+    .author-list a {
+        color: #3498db; /* Set the link color */
+        text-decoration: none; /* Remove underline from links */
+        font-weight: bold; /* Make the link text bold */
+        transition: color 0.3s ease; /* Smooth transition for color change */
+    }
+
+    /* List Item Hover Effect */
+    .author-list li:hover {
+        background-color: #dcdde1; /* Change background color on hover */
+    }
+
+    /* Link Hover Effect */
+    .author-list a:hover {
+        color: #2980b9; /* Change link color on hover */
+    }
+
+    /* Pagination Container */
+    .pagination {
+        margin-top: 20px; /* Add space above the pagination */
+        text-align: center; /* Center align the pagination links */
+    }
+
+    /* Pagination Links */
+    .page-links {
+        display: inline-block; /* Display links inline */
+    }
+
+    .page-link {
+        margin: 0 5px; /* Add space between pagination links */
+        color: #3498db; /* Set the pagination link color */
+        text-decoration: none; /* Remove underline from pagination links */
+        transition: color 0.3s ease; /* Smooth transition for color change */
+    }
+
+    /* Current Page Indicator */
+    .page-current {
+        margin: 0 10px; /* Add space around the current page indicator */
+        color: #2c3e50; /* Set the color of the current page indicator */
+        font-weight: bold; /* Make the text bold */
+    }
+
+    /* Pagination Link Hover Effect */
+    .page-link:hover {
+        color: #2980b9; /* Change pagination link color on hover */
+    }
+</style>
+{% endblock %}

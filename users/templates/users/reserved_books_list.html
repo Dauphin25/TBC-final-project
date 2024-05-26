@@ -1,0 +1,131 @@
+{% extends 'library/base.html' %}
+
+{% block content %}
+    <!-- Filter Form -->
+    <form method="get" action="{% url 'reserved_books_list' %}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by user's name or surname">
+        <button type="submit">Search</button>
+    </form>
+    <div class="reserved-books-container">
+        <h1>Reserved Books</h1>
+
+        <h2>Active Reservations</h2>
+        <ul class="reservation-list">
+            {% for reserved_book in active_reserved_books %}
+                <li class="reservation-item">
+                    <strong>Book:</strong> {{ reserved_book.book.title }}<br>
+                    <strong>User:</strong> {{ reserved_book.user }}<br>
+                    <strong>Reserved Date:</strong> {{ reserved_book.reserved_date }}<br>
+                    <strong>Due Date:</strong> {{ reserved_book.due_date }}<br>
+                    <strong>Is Taken:</strong> {{ reserved_book.is_taken }}
+
+                    <!-- Form for updating reservation status -->
+                    <form method="post" action="{% url 'reserved_books_list' %}" class="update-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="reservation_id" value="{{ reserved_book.id }}">
+                        {{ form.as_p }}
+                        <button type="submit" class="update-button">Update</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Taken Reservations</h2>
+        <ul class="reservation-list">
+            {% for reserved_book in taken_reserved_books %}
+                <li class="reservation-item">
+                    <strong>Book:</strong> {{ reserved_book.book.title }}<br>
+                    <strong>User:</strong> {{ reserved_book.user }}<br>
+                    <strong>Reserved Date:</strong> {{ reserved_book.reserved_date }}<br>
+                    <strong>Due Date:</strong> {{ reserved_book.due_date }}<br>
+                    <strong>Is Taken:</strong> {{ reserved_book.is_taken }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Canceled Reservations</h2>
+        <ul class="reservation-list">
+            {% for reserved_book in canceled_reserved_books %}
+                <li class="reservation-item">
+                    <strong>Book:</strong> {{ reserved_book.book.title }}<br>
+                    <strong>User:</strong> {{ reserved_book.user }}<br>
+                    <strong>Reserved Date:</strong> {{ reserved_book.reserved_date }}<br>
+                    <strong>Due Date:</strong> {{ reserved_book.due_date }}<br>
+                    <strong>Is Taken:</strong> {{ reserved_book.is_taken }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    <style>
+        /* Main Reserved Books Container */
+        .reserved-books-container {
+            max-width: 800px; /* Limit the width of the reserved books container */
+            margin: 0 auto; /* Center the reserved books container */
+            padding: 20px; /* Add padding around the container */
+            background-color: #f9f9f9; /* Light background color for contrast */
+            border-radius: 10px; /* Round the corners of the container */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        /* Page Title */
+        .reserved-books-container h1 {
+            color: #2c3e50; /* Darker color for the title */
+            font-family: 'Arial', sans-serif; /* Set font family for the title */
+            margin-bottom: 20px; /* Add space below the title */
+            text-align: center; /* Center align the title */
+        }
+
+        /* Section Titles */
+        .reserved-books-container h2 {
+            color: #34495e; /* Slightly lighter color for section titles */
+            font-family: 'Arial', sans-serif; /* Set font family for section titles */
+            margin-bottom: 15px; /* Add space below section titles */
+        }
+
+        /* Reservation List Styling */
+        .reservation-list {
+            list-style-type: none; /* Remove default list styling */
+            padding: 0; /* Remove default padding */
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Reservation Item Styling */
+        .reservation-item {
+            background-color: #ecf0f1; /* Light background color for list items */
+            color: #2c3e50; /* Dark text color */
+            padding: 15px; /* Add padding inside list items */
+            margin-bottom: 15px; /* Add space between list items */
+            border-radius: 5px; /* Round the corners of list items */
+            font-family: 'Arial', sans-serif; /* Set font family for list items */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            transition: background-color 0.3s ease; /* Smooth transition for background color change */
+            position: relative; /* Set position to relative for button positioning */
+        }
+
+        /* Form Styling */
+        .update-form {
+            position: absolute; /* Position the form relative to the parent item */
+            top: 50%; /* Position the form vertically at the center */
+            right: 20px; /* Position the form at the right side */
+            transform: translateY(-50%); /* Adjust the form position vertically */
+        }
+
+        /* Button Styling */
+        .update-button {
+            background-color: #3498db; /* Button background color */
+            color: #fff; /* Button text color */
+            border: none; /* Remove button border */
+            padding: 8px 16px; /* Add padding to the button */
+            border-radius: 5px; /* Round the corners of the button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: background-color 0.3s ease; /* Smooth transition for background color change */
+        }
+
+        /* Button Hover Effect */
+        .update-button:hover {
+            background-color: #2980b9; /* Change button background color on hover */
+        }
+    </style>
+{% endblock %}

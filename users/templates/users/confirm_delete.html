@@ -1,0 +1,67 @@
+<!-- templates/confirm_delete.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Delete Book{% endblock %}
+
+{% block content %}
+<!-- Main container for the delete book confirmation -->
+<div class="confirm-delete-container">
+    <h2>Delete Book</h2>
+    <p>Are you sure you want to delete the book "{{ book.title }}"?</p>
+    <!-- Form for confirming the book deletion -->
+    <form method="post" class="confirm-delete-form">
+        {% csrf_token %}
+        <!-- Submit button to confirm deletion -->
+        <button type="submit" class="confirm-delete-button">Yes, delete</button>
+    </form>
+    <!-- Link to cancel and return to book list -->
+    <a href="{% url 'book_list' %}" class="cancel-link">Cancel</a>
+</div>
+
+<!-- Adding CSS for the delete confirmation page -->
+<style>
+    /* Main Confirm Delete Container */
+    .confirm-delete-container {
+        max-width: 400px; /* Limit the width of the container */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    /* Confirm Delete Form Styling */
+    .confirm-delete-form {
+        text-align: center; /* Center align the form */
+    }
+
+    /* Confirm Delete Button Styling */
+    .confirm-delete-button {
+        background-color: #e74c3c; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove button border */
+        padding: 10px 20px; /* Add padding to the button */
+        border-radius: 5px; /* Round the corners of the button */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Confirm Delete Button Hover Effect */
+    .confirm-delete-button:hover {
+        background-color: #c0392b; /* Change button background color on hover */
+    }
+
+    /* Cancel Link Styling */
+    .cancel-link {
+        color: #3498db; /* Link color */
+        text-decoration: none; /* Remove default underline */
+        margin-left: 10px; /* Add margin to separate from the button */
+        transition: color 0.3s ease; /* Smooth transition for color change */
+    }
+
+    /* Cancel Link Hover Effect */
+    .cancel-link:hover {
+        color: #2980b9; /* Change link color on hover */
+    }
+</style>
+{% endblock %}

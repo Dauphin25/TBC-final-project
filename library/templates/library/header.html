@@ -1,0 +1,129 @@
+{% block content %}
+    <header>
+        <nav>
+            <ul class="menu">
+                <!-- Navigation links -->
+                <li><a href="{% url 'home' %}">My Library</a></li> <!-- Link to home page -->
+                <li><a href="{% url 'book_list' %}">Books</a></li> <!-- Link to list of books -->
+                <li><a href="{% url 'author_list' %}">Authors</a></li> <!-- Link to list of authors -->
+                <li><a>Rules</a></li> <!-- Placeholder link for rules (update with actual URL if needed) -->
+
+                <!-- Conditional navigation based on user authentication -->
+                {% if user.is_authenticated %}
+                    <!-- If user is authenticated -->
+                    {% if user.library_user and not user.librarian %}
+                        <!-- If user is a regular library user -->
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li> <!-- Link to user dashboard -->
+                        <li><a href="{% url 'reserve_book' %}">Reserve Book</a></li> <!-- Link to reserve a book -->
+                        <li><a href="{% url 'user_reserved_books' %}">My Reserved Books</a></li> <!-- Link to user's reserved books -->
+                    {% elif user.librarian %}
+                        <!-- If user is a librarian -->
+                        <li><a href="{% url 'book_list1' %}">Manage Books</a></li> <!-- Link to manage books (for librarian) -->
+                        <li><a href="{% url 'reserved_books_list' %}">Reserved Books</a></li> <!-- Link to view reserved books -->
+                        <li><a href="{% url 'issue_book' %}">Issue Book</a></li> <!-- Link to issue a book -->
+                        <li><a href="{% url 'active_issued_books' %}">Active Issued Books</a></li> <!-- Link to view active issued books -->
+                        <li><a href="{% url 'returned_books_history' %}">Returned Books History</a></li> <!-- Link to view returned books history -->
+                    {% endif %}
+
+                    <!-- Logout button -->
+                    <li>
+                        <form id="logout-form" method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    style="background:none;border:none;padding:0;color:blue;text-decoration:underline;cursor:pointer;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <!-- If user is not authenticated -->
+                    <li><a href="{% url 'register' %}">Register</a></li> <!-- Link to registration page -->
+                    <li><a href="{% url 'login' %}">Login</a></li> <!-- Link to login page -->
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <style>
+        /* Header Styles */
+        header {
+            background-color: #3498db; /* Set the background color of the header */
+            color: white; /* Set the text color to white */
+            padding: 1rem 0; /* Add padding to the top and bottom of the header */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Add a subtle shadow for a lifted effect */
+        }
+
+        /* Navigation Container */
+        nav {
+            display: flex; /* Use flexbox to layout the navigation links */
+            justify-content: center; /* Center the navigation links horizontally */
+        }
+
+        /* Navigation Menu */
+        .menu {
+            list-style-type: none; /* Remove default list styling (no bullets) */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            display: flex; /* Use flexbox to layout the menu items */
+        }
+
+        .menu li {
+            margin-right: 1.5rem; /* Add space between the menu items */
+            position: relative; /* Set the position to relative for potential dropdowns */
+        }
+
+        .menu li:last-child {
+            margin-right: 0; /* Remove the right margin from the last menu item */
+        }
+
+        .menu a {
+            color: white; /* Set the text color to white */
+            text-decoration: none; /* Remove the underline from links */
+            padding: 0.5rem 0; /* Add padding to the links */
+            font-size: 1.1rem; /* Increase font size for better readability */
+            transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for color and background color */
+            border-radius: 5px; /* Slightly round the corners of the links */
+        }
+
+        .menu a:hover {
+            color: #ecf0f1; /* Change text color on hover */
+            background-color: #2980b9; /* Add a background color on hover */
+            text-decoration: underline; /* Underline the link on hover */
+        }
+
+        /* Styling for the logout button */
+        #logout-form button {
+            background: none; /* Remove default background */
+            border: none; /* Remove default border */
+            padding: 0; /* Remove default padding */
+            color: white; /* Set the text color to white */
+            text-decoration: underline; /* Underline the text */
+            cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+            font-size: 1.1rem; /* Increase font size for better readability */
+            transition: color 0.3s ease; /* Smooth transition for color change */
+        }
+
+        #logout-form button:hover {
+            color: #ecf0f1; /* Change text color on hover */
+        }
+
+        /* Responsive Design for Mobile View */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column; /* Stack the navigation links vertically on smaller screens */
+                align-items: center; /* Center the navigation links */
+            }
+
+            .menu {
+                flex-direction: column; /* Stack the menu items vertically */
+            }
+
+            .menu li {
+                margin-bottom: 1rem; /* Add space between the menu items */
+            }
+
+            .menu li:last-child {
+                margin-bottom: 0; /* Remove the bottom margin from the last menu item */
+            }
+        }
+    </style>
+{% endblock %}

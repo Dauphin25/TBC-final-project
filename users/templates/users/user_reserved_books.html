@@ -1,0 +1,105 @@
+<!-- templates/library/user_reserved_books.html -->
+{% extends 'library/base.html' %}
+
+{% block content %}
+<!-- Main container for the reserved books content -->
+<div class="reserved-books-container">
+    <h1>My Reserved Books</h1>
+
+    <!-- Section for Active Reservations -->
+    <h2>Active Reservations</h2>
+    <ul class="reservation-list">
+        {% for reserved_book in active_reserved_books %}
+        <li class="reservation-item">
+            <strong>Book:</strong> {{ reserved_book.book.title }}<br>
+            <strong>Reserved Date:</strong> {{ reserved_book.reserved_date }}<br>
+            <strong>Due Date:</strong> {{ reserved_book.due_date }}<br>
+            <strong>Is Taken:</strong> {{ reserved_book.is_taken }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Section for Canceled Reservations -->
+    <h2>Canceled Reservations</h2>
+    <ul class="reservation-list">
+        {% for reserved_book in canceled_reserved_books %}
+        <li class="reservation-item">
+            <strong>Book:</strong> {{ reserved_book.book.title }}<br>
+            <strong>Reserved Date:</strong> {{ reserved_book.reserved_date }}<br>
+            <strong>Due Date:</strong> {{ reserved_book.due_date }}<br>
+            <strong>Status:</strong> Canceled
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Section for Reservation History -->
+    <h2>History</h2>
+    <ul class="reservation-list">
+        {% for reserved_book in history_reserved_books %}
+        <li class="reservation-item">
+            <strong>Book:</strong> {{ reserved_book.book.title }}<br>
+            <strong>Reserved Date:</strong> {{ reserved_book.reserved_date }}<br>
+            <strong>Due Date:</strong> {{ reserved_book.due_date }}<br>
+            <strong>Is Taken:</strong> {{ reserved_book.is_taken }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Adding CSS for the reserved books page -->
+<style>
+    /* Main Reserved Books Container */
+    .reserved-books-container {
+        max-width: 800px; /* Limit the width of the reserved books container */
+        margin: 0 auto; /* Center the reserved books container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Page Title */
+    .reserved-books-container h1 {
+        color: #2c3e50; /* Darker color for the title */
+        font-family: 'Arial', sans-serif; /* Set font family for the title */
+        margin-bottom: 20px; /* Add space below the title */
+        text-align: center; /* Center align the title */
+    }
+
+    /* Section Titles */
+    .reserved-books-container h2 {
+        color: #34495e; /* Slightly lighter color for section titles */
+        font-family: 'Arial', sans-serif; /* Set font family for section titles */
+        margin-bottom: 15px; /* Add space below section titles */
+    }
+
+    /* Reservation List Styling */
+    .reservation-list {
+        list-style-type: none; /* Remove default list styling */
+        padding: 0; /* Remove default padding */
+        margin: 0; /* Remove default margin */
+    }
+
+    /* Reservation Item Styling */
+    .reservation-item {
+        background-color: #ecf0f1; /* Light background color for list items */
+        color: #2c3e50; /* Dark text color */
+        padding: 15px; /* Add padding inside list items */
+        margin-bottom: 15px; /* Add space between list items */
+        border-radius: 5px; /* Round the corners of list items */
+        font-family: 'Arial', sans-serif; /* Set font family for list items */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Reservation Item Hover Effect */
+    .reservation-item:hover {
+        background-color: #dcdde1; /* Change background color on hover */
+    }
+
+    /* Bold Text for Labels */
+    .reservation-item strong {
+        color: #2c3e50; /* Darker color for labels */
+    }
+</style>
+{% endblock %}

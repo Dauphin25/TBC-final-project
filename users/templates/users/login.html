@@ -1,0 +1,50 @@
+<!-- users/templates/login.html -->
+<!-- templates/login.html -->
+{% extends 'library/base.html' %}
+{% block content %}
+<!-- Main container for the login form -->
+<div class="login-form-container">
+    <h2>Login</h2>
+    <!-- Form for the login -->
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- Submit button for login -->
+        <button type="submit" class="login-button">Login</button>
+    </form>
+</div>
+
+<!-- Adding CSS for the login page -->
+<style>
+    /* Main Login Form Container */
+    .login-form-container {
+        max-width: 400px; /* Limit the width of the container */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    /* Login Form Styling */
+    .login-form {
+        text-align: center; /* Center align the form */
+    }
+
+    /* Login Button Styling */
+    .login-button {
+        background-color: #3498db; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove button border */
+        padding: 10px 20px; /* Add padding to the button */
+        border-radius: 5px; /* Round the corners of the button */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Login Button Hover Effect */
+    .login-button:hover {
+        background-color: #2980b9; /* Change button background color on hover */
+    }
+</style>
+{% endblock %}

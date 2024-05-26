@@ -1,0 +1,56 @@
+<!-- templates/library/author_detail.html -->
+{% extends "library/base.html" %}
+
+{% block content %}
+<!-- Main container for the author detail content -->
+<div class="author-detail-container">
+    <h1>{{ author.first_name }} {{ author.last_name }}</h1>
+    <p class="author-country"><strong>Country:</strong> {{ author.country }}</p>
+    <p><strong>Date of Birth:</strong> {{ author.birth_date }}</p>
+    <p><strong>Date of Death:</strong> {{ author.death_date }}</p>
+    <p class="author-biography"><strong>Biography:</strong> {{ author.biography }}</p>
+</div>
+
+<!-- Adding CSS for the author detail page -->
+<style>
+    /* Main Author Detail Container */
+    .author-detail-container {
+        max-width: 800px; /* Limit the width of the author detail container */
+        margin: 0 auto; /* Center the author detail container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Page Title */
+    .author-detail-container h1 {
+        color: #2c3e50; /* Darker color for the title */
+        font-family: 'Arial', sans-serif; /* Set font family for the title */
+        margin-bottom: 20px; /* Add space below the title */
+        text-align: center; /* Center align the title */
+    }
+
+    /* Paragraph Styling */
+    .author-detail-container p {
+        color: #34495e; /* Darker text color for paragraphs */
+        font-family: 'Arial', sans-serif; /* Set font family for paragraphs */
+        margin-bottom: 10px; /* Add space below paragraphs */
+    }
+
+    /* Specific Paragraph Classes for Styling */
+    .author-detail-container .author-country,
+    .author-detail-container .author-biography {
+        background-color: #ecf0f1; /* Light background color for detail items */
+        padding: 10px; /* Add padding inside detail items */
+        border-radius: 5px; /* Round the corners of detail items */
+        margin-bottom: 10px; /* Add space below detail items */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Bold Text for Labels */
+    .author-detail-container strong {
+        color: #2c3e50; /* Darker color for labels */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,105 @@
+<!-- templates/library/dashboard.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Main container for the dashboard content -->
+<div class="dashboard-container">
+    <h2>Welcome, {{ request.user.first_name }}</h2>
+    <p>Hello, {{ request.user.last_name }}! You are logged in.</p>
+
+ </nav>
+    <div class="container mt-5">
+        <h1>User Profile</h1>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>First Name: {{ user.first_name }}</p>
+        <p>Last Name: {{ user.last_name }}</p>
+
+    </div>
+
+    <div class="section">
+        <h3>10 Most Popular Books</h3>
+        <ul class="book-list">
+            {% for book in popular_books %}
+                <li>{{ book.title }} - Borrowed {{ book.borrowed_count }} times in the last year</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>Top 100 Books Returned Lately</h3>
+        <ul class="book-list">
+            {% for issued_book in lately_returned_books %}
+                <li>{{ issued_book.book.title }} - Returned on {{ issued_book.return_date }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>Top 100 Users Who Were Late in Returning Books</h3>
+        <ul class="user-list">
+            {% for issued_book in top_late_users %}
+                <li>{{ issued_book.user.user.get_full_name }} - Returned late by {{ issued_book.delay.days }} days</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- Adding CSS for the dashboard page -->
+<style>
+    /* Main Dashboard Container */
+    .dashboard-container {
+        max-width: 800px; /* Limit the width of the dashboard */
+        margin: 0 auto; /* Center the dashboard */
+        padding: 20px; /* Add padding around the dashboard */
+        background-color: #f9f9f9; /* Light background color for contrast */
+        border-radius: 10px; /* Round the corners of the dashboard */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    /* Section Titles */
+    .dashboard-container h2, .dashboard-container h3 {
+        color: #2c3e50; /* Darker color for headings */
+        font-family: 'Arial', sans-serif; /* Set font family for headings */
+        margin-bottom: 10px; /* Add space below headings */
+    }
+
+    /* Welcome Paragraph */
+    .dashboard-container p {
+        color: #34495e; /* Slightly lighter color for paragraph */
+        font-family: 'Arial', sans-serif; /* Set font family for paragraph */
+        margin-bottom: 20px; /* Add space below paragraph */
+    }
+
+    /* Section Styling */
+    .section {
+        margin-bottom: 30px; /* Add space between sections */
+    }
+
+    /* Unordered List Styling for Books and Users */
+    .book-list, .user-list {
+        list-style-type: none; /* Remove default list styling */
+        padding: 0; /* Remove default padding */
+        margin: 0; /* Remove default margin */
+    }
+
+    /* List Item Styling */
+    .book-list li, .user-list li {
+        background-color: #ecf0f1; /* Light background color for list items */
+        color: #2c3e50; /* Dark text color */
+        padding: 10px; /* Add padding inside list items */
+        margin-bottom: 10px; /* Add space between list items */
+        border-radius: 5px; /* Round the corners of list items */
+        font-family: 'Arial', sans-serif; /* Set font family for list items */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* List Item Hover Effect */
+    .book-list li:hover, .user-list li:hover {
+        background-color: #dcdde1; /* Change background color on hover */
+    }
+</style>
+{% endblock %}

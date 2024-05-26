@@ -1,0 +1,83 @@
+<!-- templates/users/mark_as_returned.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Mark as Returned{% endblock %}
+
+{% block content %}
+<!-- Main container for the mark as returned content -->
+<div class="mark-as-returned-container">
+    <h2>Mark as Returned</h2>
+    <p>Are you sure you want to mark the book "{{ issued_book.book.title }}" as returned?</p>
+    <!-- Form for marking the book as returned -->
+    <form method="post" class="mark-as-returned-form">
+        {% csrf_token %}
+        <!-- Submit button to mark the book as returned -->
+        <button type="submit" class="mark-as-returned-button">Mark as Returned</button>
+        <!-- Link to cancel and return to active issued books -->
+        <a href="{% url 'active_issued_books' %}" class="cancel-link">Cancel</a>
+    </form>
+</div>
+
+<!-- Adding CSS for the mark as returned page -->
+<style>
+    /* Main Mark as Returned Container */
+    .mark-as-returned-container {
+        max-width: 600px; /* Limit the width of the container */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    /* Header Styling */
+    .mark-as-returned-container h2 {
+        color: #2c3e50; /* Dark color for the header */
+        font-family: 'Arial', sans-serif; /* Font family for the header */
+        margin-bottom: 10px; /* Margin below the header */
+        text-align: center; /* Center align the header */
+    }
+
+    /* Text Styling */
+    .mark-as-returned-container p {
+        color: #34495e; /* Slightly lighter color for text */
+        font-family: 'Arial', sans-serif; /* Font family for text */
+        margin-bottom: 20px; /* Margin below the text */
+        text-align: center; /* Center align the text */
+    }
+
+    /* Form Styling */
+    .mark-as-returned-form {
+        text-align: center; /* Center align the form contents */
+    }
+
+    /* Mark as Returned Button Styling */
+    .mark-as-returned-button {
+        background-color: #3498db; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove button border */
+        padding: 10px 20px; /* Add padding to the button */
+        border-radius: 5px; /* Round the corners of the button */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Mark as Returned Button Hover Effect */
+    .mark-as-returned-button:hover {
+        background-color: #2980b9; /* Change button background color on hover */
+    }
+
+    /* Cancel Link Styling */
+    .cancel-link {
+        color: #3498db; /* Link color */
+        text-decoration: none; /* Remove default underline */
+        margin-left: 10px; /* Add margin to separate from the button */
+        transition: color 0.3s ease; /* Smooth transition for color change */
+    }
+
+    /* Cancel Link Hover Effect */
+    .cancel-link:hover {
+        color: #2980b9; /* Change link color on hover */
+    }
+</style>
+{% endblock %}

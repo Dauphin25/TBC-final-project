@@ -1,0 +1,31 @@
+{% load static %}
+<!-- base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'library/css/style.css' %}">
+
+    <!-- Add your additional meta tags here -->
+</head>
+<body>
+
+<!-- Include header -->
+{% include 'library/header.html' %}
+
+<!-- Main content -->
+<main class="container my-5">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<!-- Include footer -->
+{% include 'library/footer.html' %}
+
+</body>
+</html>

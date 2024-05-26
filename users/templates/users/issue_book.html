@@ -1,0 +1,67 @@
+<!-- templates/issue_book.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Issue Book{% endblock %}
+
+{% block content %}
+<!-- Main container for the issue book form -->
+<div class="issue-book-container">
+    <h2>Issue Book</h2>
+    <!-- Form for issuing a book -->
+    <form method="post" class="issue-book-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- Submit button for issuing a book -->
+        <button type="submit" class="issue-button">Issue</button>
+    </form>
+    <!-- Link to cancel and return to active issued books -->
+    <a href="{% url 'active_issued_books' %}" class="cancel-link">Cancel</a>
+</div>
+
+<!-- Adding CSS for the issue book page -->
+<style>
+    /* Main Issue Book Container */
+    .issue-book-container {
+        max-width: 400px; /* Limit the width of the container */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    /* Issue Book Form Styling */
+    .issue-book-form {
+        text-align: center; /* Center align the form */
+    }
+
+    /* Issue Button Styling */
+    .issue-button {
+        background-color: #3498db; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove button border */
+        padding: 10px 20px; /* Add padding to the button */
+        border-radius: 5px; /* Round the corners of the button */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    }
+
+    /* Issue Button Hover Effect */
+    .issue-button:hover {
+        background-color: #2980b9; /* Change button background color on hover */
+    }
+
+    /* Cancel Link Styling */
+    .cancel-link {
+        color: #3498db; /* Link color */
+        text-decoration: none; /* Remove default underline */
+        margin-left: 10px; /* Add margin to separate from the button */
+        transition: color 0.3s ease; /* Smooth transition for color change */
+    }
+
+    /* Cancel Link Hover Effect */
+    .cancel-link:hover {
+        color: #2980b9; /* Change link color on hover */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!-- templates/issue_success.html -->
+{% extends "library/base.html" %}
+
+{% block title %}Issue Successful{% endblock %}
+
+{% block content %}
+<!-- Main container for the issue success content -->
+<div class="issue-success-container">
+    <h2>Book Issued Successfully!</h2>
+    <p>The book has been successfully issued to the user.</p>
+</div>
+
+<!-- Adding CSS for the issue success page -->
+<style>
+    /* Main Issue Success Container */
+    .issue-success-container {
+        max-width: 600px; /* Limit the width of the container */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding around the container */
+        background-color: #f9f9f9; /* Light background color */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    /* Header Styling */
+    .issue-success-container h2 {
+        color: #2c3e50; /* Dark color for the header */
+        font-family: 'Arial', sans-serif; /* Font family for the header */
+        margin-bottom: 10px; /* Margin below the header */
+        text-align: center; /* Center align the header */
+    }
+
+    /* Text Styling */
+    .issue-success-container p {
+        color: #34495e; /* Slightly lighter color for text */
+        font-family: 'Arial', sans-serif; /* Font family for text */
+        margin-bottom: 20px; /* Margin below the text */
+        text-align: center; /* Center align the text */
+    }
+</style>
+{% endblock %}
