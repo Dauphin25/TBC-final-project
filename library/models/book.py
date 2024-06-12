@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import os
 
 
 class Book(models.Model):
@@ -9,6 +10,7 @@ class Book(models.Model):
     publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE, verbose_name=_('Publisher'))
     published_date = models.DateField(verbose_name=_('Published Date'), blank=True, null=True)
     tags = models.ManyToManyField('Tag',  verbose_name=_('Tags'), blank=True)
+    cover = models.ImageField(upload_to='book_covers/', blank=True, null=True)
     stock_quantity = models.IntegerField(verbose_name=_('Stock Quantity'))
     borrowed_quantity = models.IntegerField(verbose_name=_('Borrowed Quantity'), default=0)
     current_borrowed_quantity = models.IntegerField(verbose_name=_('Current Borrowed Quantity'), default=0)
@@ -16,6 +18,10 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_similar_books(self):
+        similar_books = Book.objects.filter(tags__in=self.tags.all()).exclude(id=self.id).distinct()
+        return similar_books
 
     def save(self, *args, **kwargs):
         self.currently_available_quantity = self.stock_quantity - self.current_borrowed_quantity

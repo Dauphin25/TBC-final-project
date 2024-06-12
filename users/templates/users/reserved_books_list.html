@@ -2,9 +2,9 @@
 
 {% block content %}
     <!-- Filter Form -->
-    <form method="get" action="{% url 'reserved_books_list' %}">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search by user's name or surname">
-        <button type="submit">Search</button>
+    <form method="get" action="{% url 'reserved_books_list' %}" class="search-form">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by Personal Identification Number" class="search-input">
+        <button type="submit" class="search-button">Search</button>
     </form>
     <div class="reserved-books-container">
         <h1>Reserved Books</h1>
@@ -59,6 +59,53 @@
 
 
     <style>
+        /* Stylish Search Bar */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 10px 15px;
+            border: 2px solid #3498db;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 10px rgba(41, 128, 185, 0.5);
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            border-radius: 0 25px 25px 0;
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .search-button:focus {
+            outline: none;
+        }
+
+        .search-form input::placeholder {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
         /* Main Reserved Books Container */
         .reserved-books-container {
             max-width: 800px; /* Limit the width of the reserved books container */

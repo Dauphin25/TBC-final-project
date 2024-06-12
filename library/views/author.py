@@ -7,7 +7,7 @@ class AuthorListView(ListView):
     model = Author
     template_name = 'library/author_list.html'  # Replace with your actual template
     context_object_name = 'authors'
-    paginate_by = 10  # Display 10 authors per page
+    paginate_by = 9  # Display 10 authors per page
 
     def get_queryset(self):
         query = self.request.GET.get('q')

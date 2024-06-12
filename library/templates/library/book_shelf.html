@@ -1,0 +1,81 @@
+{% extends "library/base.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'library/css/shelf.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'library/css/book_filter.css' %}">
+
+    <div class="shelf-container">
+        <div class="shelf-header">
+            <h1>CHOOSE YOUR BOOK</h1>
+            <p>A room without books is like a body without a soul</p>
+            <p><strong>Cicero</strong></p>
+        </div>
+
+        <div class="shelf-main">
+            <div class="filter-section">
+                <form method="get">
+                    <div class="search-bar">
+                        <input type="text" name="q" placeholder="Search by title..." value="{{ query }}">
+                        <button type="submit">Search</button>
+                    </div>
+                    <div class="filter-tags">
+                        <h3>Filter by Tags</h3>
+                        <div class="tag-list">
+                            {% for tag in tags %}
+                                <button type="submit" name="tags" value="{{ tag.id }}"
+                                        class="filter-button {% if tag.id|stringformat:"s" in selected_tags %}selected{% endif %}">{{ tag.name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="filter-publishers">
+                        <h3>Filter by Publisher</h3>
+                        <div class="publisher-list">
+                            {% for publisher in publishers %}
+                                <button type="submit" name="publisher" value="{{ publisher.id }}"
+                                        class="filter-button {% if publisher.id|stringformat:"s" in selected_publishers %}selected{% endif %}">{{ publisher.name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="bookshelf">
+                {% for book in books %}
+                    <a href="{% url 'book_detail' book.pk %}" class="book"
+                       style="--book-color: {{ book.color }}; --rotation: {{ book.rotation }}deg; --width: {{ book.width }}%;">
+                        <div class="book-spine">
+                            <span class="book-title">{{ book.title }}</span>
+                            <span class="book-author">{{ book.author.first_name }} {{ book.author.last_name }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if is_paginated %}
+            <span class="page-links">
+    {% if page_obj.has_previous %}
+        <a href="?q={{ query }}&page=1
+                {% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+           class="page-link">&laquo; first</a>
+        <a href="?q={{ query }}&page=
+                {{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+           class="page-link">previous</a>
+    {% endif %}
+                <span class="page-current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query }}&page=
+                            {{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                       class="page-link">next</a>
+                    <a href="?q={{ query }}&page=
+                            {{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                       class="page-link">last &raquo;</a>
+                {% endif %}
+    </span>
+        {% endif %}
+    </div>
+
+{% endblock %}

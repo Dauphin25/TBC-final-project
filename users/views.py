@@ -45,69 +45,37 @@ class CustomLoginView(LoginView):
     template_name = 'users/login.html'
 
 
-def dashboard(request):
-    # 10 most popular books (borrowed most times in the last year)
-    one_year_ago = timezone.now() - timedelta(days=365)
-
-    popular_books = Book.objects.filter(
-        issuedbook__issued_date__gte=one_year_ago
-    ).annotate(
-        borrowed_count=models.Count('issuedbook')
-    ).order_by('-borrowed_count')[:10]
-
-    # Top 100 books returned lately
-    lately_returned_books = IssuedBook.objects.filter(
-        return_date__isnull=False
-    ).order_by('-return_date')[:100]
-
-    # Top 100 users who were late in returning books
-    top_late_users = IssuedBook.objects.filter(
-        return_date__isnull=False
-    ).annotate(
-        delay=models.ExpressionWrapper(
-            models.F('return_date') - models.F('due_date'),
-            output_field=models.DurationField()
-        )
-    ).order_by('-delay')[:100]
-
-    context = {
-        'popular_books': popular_books,
-        'lately_returned_books': lately_returned_books,
-        'top_late_users': top_late_users,
-    }
-    print(top_late_users, lately_returned_books, popular_books)
-    return render(request, 'library/dashboard.html', context)
-
-
-@login_required
-def reserve_book(request):
-    if request.method == 'POST':
-        form = ReserveBookForm(request.POST)
-        if form.is_valid():
-            reserve_book = form.save(commit=False)
-            reserve_book.user = request.user.library_user
-            reserve_book.save()
-            return redirect('reservation_success')
-    else:
-        form = ReserveBookForm()
-    return render(request, 'users/reserve_book.html', {'form': form})
-
-
-@login_required
-def reservation_success(request):
-    return render(request, 'users/reservation_success.html')
-
-
 @login_required
 def user_reserved_books(request):
+    search_query = request.GET.get('q', '')
+    sort_order = request.GET.get('sort', 'newest')
+    user_info = request.user
+
     active_reserved_books = ReserveBook.objects.filter(user=request.user.library_user, is_taken=False, status='active')
     canceled_reserved_books = ReserveBook.objects.filter(user=request.user.library_user, status='canceled')
     history_reserved_books = ReserveBook.objects.filter(user=request.user.library_user, is_taken=True)
 
+    if search_query:
+        active_reserved_books = active_reserved_books.filter(book__title__icontains=search_query)
+        canceled_reserved_books = canceled_reserved_books.filter(book__title__icontains=search_query)
+        history_reserved_books = history_reserved_books.filter(book__title__icontains=search_query)
+
+    if sort_order == 'newest':
+        active_reserved_books = active_reserved_books.order_by('-reserved_date')
+        canceled_reserved_books = canceled_reserved_books.order_by('-reserved_date')
+        history_reserved_books = history_reserved_books.order_by('-reserved_date')
+    elif sort_order == 'oldest':
+        active_reserved_books = active_reserved_books.order_by('reserved_date')
+        canceled_reserved_books = canceled_reserved_books.order_by('reserved_date')
+        history_reserved_books = history_reserved_books.order_by('reserved_date')
+
     return render(request, 'users/user_reserved_books.html', {
         'active_reserved_books': active_reserved_books,
         'canceled_reserved_books': canceled_reserved_books,
-        'history_reserved_books': history_reserved_books
+        'history_reserved_books': history_reserved_books,
+        'search_query': search_query,
+        'sort_order': sort_order,
+        'user_info': user_info,
     })
 
 
@@ -137,8 +105,16 @@ def issue_success(request):
 
 @user_passes_test(is_librarian)
 def active_issued_books(request):
+    query = request.GET.get('q')
     issued_books = IssuedBook.objects.filter(returned=False)
-    return render(request, 'users/active_issued_books.html', {'issued_books': issued_books})
+
+    if query:
+        issued_books = issued_books.filter(user__personal_identification_number__icontains=query)
+
+    return render(request, 'users/active_issued_books.html', {
+        'issued_books': issued_books,
+        'query': query,
+    })
 
 
 @user_passes_test(is_librarian)
@@ -152,8 +128,16 @@ def mark_as_returned(request, pk):
 
 @user_passes_test(is_librarian)
 def returned_books_history(request):
+    query = request.GET.get('q')
     returned_books = IssuedBook.objects.filter(returned=True)
-    return render(request, 'users/returned_books_history.html', {'returned_books': returned_books})
+
+    if query:
+        returned_books = returned_books.filter(user__personal_identification_number__icontains=query)
+
+    return render(request, 'users/returned_books_history.html', {
+        'returned_books': returned_books,
+        'query': query,
+    })
 
 
 @user_passes_test(is_librarian)
@@ -221,13 +205,13 @@ def reserved_books_list(request):
 
     if query:
         active_reserved_books = active_reserved_books.filter(
-            Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query)
+            Q(user__personal_identification_number__icontains=query)
         )
         canceled_reserved_books = canceled_reserved_books.filter(
-            Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query)
+            Q(user__personal_identification_number__icontains=query)
         )
         taken_reserved_books = taken_reserved_books.filter(
-            Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query)
+            Q(user__personal_identification_number__icontains=query)
         )
 
     form = UpdateIsTakenForm()
@@ -241,4 +225,3 @@ def reserved_books_list(request):
     }
 
     return render(request, 'users/reserved_books_list.html', context)
-

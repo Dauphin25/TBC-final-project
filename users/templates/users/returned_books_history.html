@@ -4,6 +4,15 @@
 {% block title %}Returned Books History{% endblock %}
 
 {% block content %}
+
+    <div class="search-container">
+    <form method="get" action="{% url 'returned_books_history' %}" class="search-form">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by Personal ID Number" class="search-input">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</div>
+
+
 <!-- Main container for the returned books history content -->
 <div class="returned-books-history-container">
     <h2>Returned Books History</h2>
@@ -39,6 +48,55 @@
 
 <!-- Adding CSS for the returned books history page -->
 <style>
+
+
+/* Stylish Search Bar */
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 300px;
+    padding: 10px 15px;
+    border: 2px solid #3498db;
+    border-radius: 25px 0 0 25px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.search-input:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 10px rgba(41, 128, 185, 0.5);
+}
+
+.search-button {
+    padding: 10px 20px;
+    border: 2px solid #3498db;
+    border-radius: 0 25px 25px 0;
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.search-button:focus {
+    outline: none;
+}
+
+.search-form input::placeholder {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
     /* Main Returned Books History Container */
     .returned-books-history-container {
         max-width: 800px; /* Limit the width of the returned books history container */

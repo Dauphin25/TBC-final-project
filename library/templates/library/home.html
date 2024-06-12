@@ -1,0 +1,63 @@
+{% extends "library/base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'library/css/home.css' %}">
+
+<div class="page-container">
+
+    <!-- Project Name and Description -->
+    <div class="project-name">
+        <h1>TBC-Library</h1>
+        <p>Welcome to the TBC-Library, your gateway to a world of knowledge. Explore our vast collection of books and connect with renowned authors. Stay updated with our latest collections and upcoming events. Join us and embark on your reading journey today!</p>
+    </div>
+
+<!-- Hard-Working Authors Section -->
+<div class="info-section authors-section">
+    <h2>Hard-Working Authors</h2>
+    <div class="authors-container">
+        {% for author in popular_authors %}
+            <a href="{% url 'author_detail' author.id %}" class="author-card">
+                <h3>{{ author.first_name }} {{ author.last_name }}</h3>
+                <p>Books: {{ author.num_books }}</p>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- News Marquee Section -->
+    <div class="news-marquee">
+        <marquee behavior="scroll" direction="left">
+            {{ news1 }}
+        </marquee>
+    </div>
+
+    <!-- Popular Books Section -->
+    <div class="info-section books-section">
+        <h2>Popular Books</h2>
+        <div class="books-container">
+            {% for book in popular_books %}
+                <a href="{% url 'book_detail' book.id %}" class="book-card">
+                <div class="book-card">
+                    <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                    <div class="book-info">
+                        <h3>{{ book.title }}</h3>
+                        <p>Borrowed: {{ book.borrowed_quantity }} times</p>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Second News Marquee Section -->
+    <div class="news-marquee">
+        <marquee behavior="scroll" direction="right">
+            {{ news2 }}
+        </marquee>
+    </div>
+</div>
+
+{% endblock %}

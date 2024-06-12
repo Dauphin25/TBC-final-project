@@ -4,12 +4,21 @@
 {% block title %}Active Issued Books{% endblock %}
 
 {% block content %}
-<!-- Main container for the active issued books -->
-<div class="active-issued-books-container">
-    <h2>Active Issued Books</h2>
-    <!-- Table to display the list of active issued books -->
-    <table class="issued-books-table">
-        <thead>
+    <!-- Main container for the active issued books -->
+
+    <div class="search-container">
+        <form method="get" action="{% url 'active_issued_books' %}" class="search-form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search by Personal ID Number"
+                   class="search-input">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    <div class="active-issued-books-container">
+        <h2>Active Issued Books</h2>
+        <!-- Table to display the list of active issued books -->
+        <table class="issued-books-table">
+            <thead>
             <tr>
                 <th>Book Title</th>
                 <th>User</th>
@@ -17,77 +26,126 @@
                 <th>Due Date</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             {% for issued_book in issued_books %}
-            <tr>
-                <!-- Issued book details -->
-                <td>{{ issued_book.book.title }}</td>
-                <td>{{ issued_book.user.user.get_full_name }}</td>
-                <td>{{ issued_book.issued_date }}</td>
-                <td>{{ issued_book.due_date }}</td>
-                <!-- Form to mark the book as returned -->
-                <td>
-                    <form action="{% url 'mark_as_returned' issued_book.pk %}" method="post" class="mark-return-form">
-                        {% csrf_token %}
-                        <!-- Submit button to mark the book as returned -->
-                        <button type="submit" class="mark-return-button">Mark as Returned</button>
-                    </form>
-                </td>
-            </tr>
+                <tr>
+                    <!-- Issued book details -->
+                    <td>{{ issued_book.book.title }}</td>
+                    <td>{{ issued_book.user.user.get_full_name }}</td>
+                    <td>{{ issued_book.issued_date }}</td>
+                    <td>{{ issued_book.due_date }}</td>
+                    <!-- Form to mark the book as returned -->
+                    <td>
+                        <form action="{% url 'mark_as_returned' issued_book.pk %}" method="post"
+                              class="mark-return-form">
+                            {% csrf_token %}
+                            <!-- Submit button to mark the book as returned -->
+                            <button type="submit" class="mark-return-button">Mark as Returned</button>
+                        </form>
+                    </td>
+                </tr>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 
-<!-- Adding CSS for the active issued books page -->
-<style>
-    /* Main Active Issued Books Container */
-    .active-issued-books-container {
-        max-width: 800px; /* Limit the width of the container */
-        margin: 0 auto; /* Center the container */
-        padding: 20px; /* Add padding around the container */
-    }
+    <!-- Adding CSS for the active issued books page -->
+    <style>
+        /* Main Active Issued Books Container */
+        .active-issued-books-container {
+            max-width: 800px; /* Limit the width of the container */
+            margin: 0 auto; /* Center the container */
+            padding: 20px; /* Add padding around the container */
+        }
 
-    /* Issued Books Table Styling */
-    .issued-books-table {
-        width: 100%; /* Set table width to 100% */
-        border-collapse: collapse; /* Collapse table borders */
-    }
+        /* Issued Books Table Styling */
+        .issued-books-table {
+            width: 100%; /* Set table width to 100% */
+            border-collapse: collapse; /* Collapse table borders */
+        }
 
-    /* Table Header Styling */
-    .issued-books-table th {
-        background-color: #f2f2f2; /* Header background color */
-        padding: 10px; /* Add padding to header cells */
-        text-align: left; /* Left-align header text */
-        border-bottom: 2px solid #ddd; /* Bottom border for header cells */
-    }
+        /* Table Header Styling */
+        .issued-books-table th {
+            background-color: #f2f2f2; /* Header background color */
+            padding: 10px; /* Add padding to header cells */
+            text-align: left; /* Left-align header text */
+            border-bottom: 2px solid #ddd; /* Bottom border for header cells */
+        }
 
-    /* Table Data Styling */
-    .issued-books-table td {
-        padding: 10px; /* Add padding to data cells */
-        border-bottom: 1px solid #ddd; /* Bottom border for data cells */
-    }
+        /* Table Data Styling */
+        .issued-books-table td {
+            padding: 10px; /* Add padding to data cells */
+            border-bottom: 1px solid #ddd; /* Bottom border for data cells */
+        }
 
-    /* Mark Return Form Styling */
-    .mark-return-form {
-        text-align: center; /* Center align the form */
-    }
+        /* Mark Return Form Styling */
+        .mark-return-form {
+            text-align: center; /* Center align the form */
+        }
 
-    /* Mark Return Button Styling */
-    .mark-return-button {
-        background-color: #e74c3c; /* Button background color */
-        color: #fff; /* Button text color */
-        border: none; /* Remove button border */
-        padding: 5px 10px; /* Add padding to the button */
-        border-radius: 5px; /* Round the corners of the button */
-        cursor: pointer; /* Change cursor to pointer on hover */
-        transition: background-color 0.3s ease; /* Smooth transition for background color change */
-    }
+        /* Mark Return Button Styling */
+        .mark-return-button {
+            background-color: #e74c3c; /* Button background color */
+            color: #fff; /* Button text color */
+            border: none; /* Remove button border */
+            padding: 5px 10px; /* Add padding to the button */
+            border-radius: 5px; /* Round the corners of the button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: background-color 0.3s ease; /* Smooth transition for background color change */
+        }
 
-    /* Mark Return Button Hover Effect */
-    .mark-return-button:hover {
-        background-color: #c0392b; /* Change button background color on hover */
-    }
-</style>
+        /* Mark Return Button Hover Effect */
+        .mark-return-button:hover {
+            background-color: #c0392b; /* Change button background color on hover */
+        }
+
+        /* Stylish Search Bar */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 10px 15px;
+            border: 2px solid #3498db;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 10px rgba(41, 128, 185, 0.5);
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            border-radius: 0 25px 25px 0;
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .search-button:focus {
+            outline: none;
+        }
+
+        .search-form input::placeholder {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+    </style>
 {% endblock %}

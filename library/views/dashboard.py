@@ -1,41 +1,55 @@
-# views.py
-from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q, F, ExpressionWrapper, fields
+from datetime import timedelta
+from django.utils import timezone
+from django.db.models import Count, Avg, F, ExpressionWrapper, DurationField, Sum
 from django.shortcuts import render
-from datetime import datetime, timedelta
 from library.models.book import Book
 from library.models.issued_book import IssuedBook
+from library.models.reserve_book import ReserveBook
+from library.models.author import Author
+from users.models.library_user import LibraryUser
 
 
-@login_required
 def dashboard(request):
-    # Calculate the date one year ago from today
-    one_year_ago = datetime.now() - timedelta(days=365)
+    one_year_ago = timezone.now() - timedelta(days=365)
+    one_month_ago = timezone.now() - timedelta(days=30)
 
-    # 10 most popular books based on borrowed count in the last year
-    popular_books = Book.objects.annotate(
-        borrowed_count=Count('issuedbook', filter=Q(issuedbook__issued_date__gte=one_year_ago))
-    ).order_by('-borrowed_count')[:10]
+    # Total statistics
+    total_books = Book.objects.count()
+    total_borrowed_books = IssuedBook.objects.filter(returned=False).count()
+    total_available_books = Book.objects.aggregate(total_available=Sum('currently_available_quantity'))['total_available']
+    reserved_books = ReserveBook.objects.filter(reserved_date__gte=one_month_ago).count()
+    total_active_users = LibraryUser.objects.count()
 
-    # Top 100 books which were returned lately
-    lately_returned_books = IssuedBook.objects.filter(
-        returned=True
-    ).order_by('-return_date')[:100]
+    # Average delay in returning books
+    average_delay = IssuedBook.objects.filter(return_date__isnull=False).annotate(
+        delay=ExpressionWrapper(F('return_date') - F('due_date'), output_field=DurationField())
+    ).aggregate(average_delay=Avg('delay'))['average_delay']
 
-    # Top 100 users who were late in returning books
-    top_late_users = IssuedBook.objects.filter(
-        returned=True,
-        return_date__gt=F('due_date')
-    ).annotate(
-        delay=ExpressionWrapper(F('return_date') - F('due_date'), output_field=fields.DurationField())
-    ).order_by('-delay')[:100]
+    # Top books (most borrowed)
+    top_books = Book.objects.annotate(borrowed_count=Count('issuedbook')).order_by('-borrowed_count')[:5]
+
+    # Top authors (most books published)
+    top_authors = Author.objects.annotate(total_books=Count('book')).order_by('-total_books')[:3]
+
+    reserved_books = ReserveBook.objects.filter(reserved_date__gte=one_month_ago).count()
+    total_active_users = LibraryUser.objects.count()
+
+    # Top users (most late returns)
+    top_users = IssuedBook.objects.filter(return_date__isnull=False).annotate(
+        delay=ExpressionWrapper(F('return_date') - F('due_date'), output_field=DurationField())
+    ).values('user__first_name', 'user__last_name').annotate(
+        total_delay=Avg('delay')
+    ).order_by('-total_delay')[:3]
 
     context = {
-        'popular_books': popular_books,
-        'lately_returned_books': lately_returned_books,
-        'top_late_users': top_late_users,
+        'total_books': total_books,
+        'total_borrowed_books': total_borrowed_books,
+        'total_available_books': total_available_books,
+        'average_delay': average_delay,
+        'top_books': top_books,
+        'top_authors': top_authors,
+        'top_users': top_users,
+        'reserved_books': reserved_books,
+        'total_active_users': total_active_users,
     }
-    print(popular_books, lately_returned_books, top_late_users)
-    print("fsdvbs")
-
     return render(request, 'library/dashboard.html', context)

@@ -1,0 +1,70 @@
+.info-section {
+    margin-bottom: 20px;
+}
+
+.reserved-books-container {
+    margin-top: 20px;
+}
+
+.reserved-books-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.reserved-books-container input[type="text"] {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.reserved-books-container select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.reserved-books-container button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f00;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reserved-books-container button:hover {
+    background-color: #ff9a9a;
+}
+
+.reserved-books-columns {
+    display: flex;
+    gap: 20px;
+}
+
+.reserved-column {
+    flex: 1;
+    padding: 0 20px;
+    border-left: 1px solid #ddd;
+}
+
+.reserved-column:first-child {
+    border-left: none;
+}
+
+.reserved-column h3 {
+    margin-top: 0;
+}
+
+.reserved-column ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.reserved-column li {
+    margin-bottom: 10px;
+}

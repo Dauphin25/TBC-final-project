@@ -1,130 +1,195 @@
 {% extends "library/base.html" %}
 
 {% block content %}
-    <!-- Main container for the book list content -->
-
-
-    <!-- Filter Form -->
+<!-- Search Form Container -->
+<div class="search-form-container">
     <form method="get" action="{% url 'book_list' %}">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search by book title">
-        <button type="submit">Search</button>
+        <!-- Search Input Field -->
+        <input type="text" name="q" value="{{ query }}" class="search-input" placeholder="Search by book title">
+        <!-- Search Button -->
+        <button type="submit" class="search-button">Search</button>
     </form>
-    <div class="book-list-container">
-        <h1>Books</h1>
-        <ul class="book-list">
-            {% for book in books %}
-                <li>
-                    <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+</div>
 
-        {% if is_paginated %}
-            <div class="pagination">
-                <span class="page-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?q={{ query }}&page=1" class="page-link">&laquo; first</a>
-                        <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="page-link">previous</a>
-                    {% endif %}
-
-                    <span class="page-current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
-
-                    {% if page_obj.has_next %}
-                        <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="page-link">next</a>
-                        <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a>
-                    {% endif %}
-                </span>
-            </div>
-        {% endif %}
+<div class="book-list-container">
+    <h1>Books</h1>
+    <div class="book-grid">
+        {% for book in books %}
+            <a href="{% url 'book_detail' book.pk %}" class="book-item">
+                <div>
+                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="book-cover">
+                </div>
+                <div class="book-details">
+                    <span class="book-title">{{ book.title }}</span>
+                    <p class="book-author">{{ book.author }}</p>
+                </div>
+            </a>
+        {% endfor %}
     </div>
 
-    <!-- Adding CSS for the book list page -->
-    <style>
-        /* Main Book List Container */
-        .book-list-container {
-            max-width: 800px; /* Limit the width of the book list container */
-            margin: 0 auto; /* Center the book list container */
-            padding: 20px; /* Add padding around the container */
-            background-color: #f9f9f9; /* Light background color for contrast */
-            border-radius: 10px; /* Round the corners of the container */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-        }
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ query }}&page=1" class="page-link">&laquo; first</a>
+                    <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="page-link">previous</a>
+                {% endif %}
 
-        /* Page Title */
-        .book-list-container h1 {
-            color: #2c3e50; /* Darker color for the title */
-            font-family: 'Arial', sans-serif; /* Set font family for the title */
-            margin-bottom: 20px; /* Add space below the title */
-            text-align: center; /* Center align the title */
-        }
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
 
-        /* Unordered List Styling */
-        .book-list {
-            list-style-type: none; /* Remove default list styling */
-            padding: 0; /* Remove default padding */
-            margin: 0; /* Remove default margin */
-        }
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="page-link">next</a>
+                    <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+</div>
 
-        /* List Item Styling */
-        .book-list li {
-            background-color: #ecf0f1; /* Light background color for list items */
-            color: #2c3e50; /* Dark text color */
-            padding: 10px; /* Add padding inside list items */
-            margin-bottom: 10px; /* Add space between list items */
-            border-radius: 5px; /* Round the corners of list items */
-            font-family: 'Arial', sans-serif; /* Set font family for list items */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-            transition: background-color 0.3s ease; /* Smooth transition for background color change */
-        }
+<!-- Adding CSS for the book list page -->
+<style>
+    body {
+        background-color: #124c47; /* Match the dark green background color */
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
 
-        /* Link Styling */
-        .book-list a {
-            color: #3498db; /* Set the link color */
-            text-decoration: none; /* Remove underline from links */
-            font-weight: bold; /* Make the link text bold */
-            transition: color 0.3s ease; /* Smooth transition for color change */
-        }
+    /* Search Form Container */
+    .search-form-container {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-        /* List Item Hover Effect */
-        .book-list li:hover {
-            background-color: #dcdde1; /* Change background color on hover */
-        }
+    /* Search Input Field */
+    .search-input {
+        width: 70%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        margin-right: 10px;
+    }
 
-        /* Link Hover Effect */
-        .book-list a:hover {
-            color: #2980b9; /* Change link color on hover */
-        }
+    /* Search Button */
+    .search-button {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease;
+    }
 
-        /* Pagination Container */
-        .pagination {
-            margin-top: 20px; /* Add space above the pagination */
-            text-align: center; /* Center align the pagination links */
-        }
+    /* Search Button Hover Effect */
+    .search-button:hover {
+        background-color: #2980b9;
+    }
 
-        /* Pagination Links */
-        .page-links {
-            display: inline-block; /* Display links inline */
-        }
+    /* Main Book List Container */
+    .book-list-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ecf0f1; /* Light background color for contrast */
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        .page-link {
-            margin: 0 5px; /* Add space between pagination links */
-            color: #3498db; /* Set the pagination link color */
-            text-decoration: none; /* Remove underline from pagination links */
-            transition: color 0.3s ease; /* Smooth transition for color change */
-        }
+    /* Page Title */
+    .book-list-container h1 {
+        color: #2c3e50;
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 20px;
+        text-align: center;
+    }
 
-        /* Current Page Indicator */
-        .page-current {
-            margin: 0 10px; /* Add space around the current page indicator */
-            color: #2c3e50; /* Set the color of the current page indicator */
-            font-weight: bold; /* Make the text bold */
-        }
+    /* Grid Container */
+    .book-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
 
-        /* Pagination Link Hover Effect */
-        .page-link:hover {
-            color: #2980b9; /* Change pagination link color on hover */
-        }
-    </style>
+    /* Individual Book Item */
+    .book-item {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Book Cover Image */
+    .book-cover {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    /* Book Details */
+    .book-details {
+        width: 100%;
+    }
+
+    .book-title {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1em;
+        display: block;
+    }
+
+    .book-author {
+        color: #2c3e50;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+
+    /* Hover Effects */
+    .book-item:hover {
+        transform: scale(1.05);
+    }
+
+    .book-title:hover {
+        color: #2980b9;
+    }
+
+    /* Pagination Container */
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    /* Pagination Links */
+    .page-links {
+        display: inline-block;
+    }
+
+    .page-link {
+        margin: 0 5px;
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .page-link:hover {
+        color: #2980b9;
+    }
+</style>
 {% endblock %}

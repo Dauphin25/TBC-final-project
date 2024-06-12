@@ -7,8 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Website{% endblock %}</title>
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'library/css/style.css' %}">
 
     <!-- Add your additional meta tags here -->
@@ -17,6 +15,15 @@
 
 <!-- Include header -->
 {% include 'library/header.html' %}
+ {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
 <!-- Main content -->
 <main class="container my-5">
@@ -29,3 +36,5 @@
 
 </body>
 </html>
+
+
